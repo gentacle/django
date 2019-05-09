@@ -1,0 +1,16 @@
+{% extends 'blog/blog_home.html' %}
+
+{% block content %}
+  {% if user.is_authenticated %}
+    <a href="{% url 'post_new' %}" class="top-menu" style="float:right;"><span class="glyphicon glyphicon-plus-sign" style="font-size:4em; text-align:right;"></span></a>
+  {% endif %}
+  <br>
+  {% for post in posts %}
+    <div class="post">
+      <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+      {{ post.published_date | date:'y-m-d' }}
+    </div>
+  {% empty %}
+    <h5>게시글이 없습니다.</h5>
+  {% endfor %}
+{% endblock %}

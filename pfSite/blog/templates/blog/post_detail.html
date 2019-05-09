@@ -1,0 +1,59 @@
+{% extends "blog/header.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block extra_head %}
+<style>
+.post_photo {
+  max-width: 100%;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class='container-fluid'>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h1>{{ post.title }}</h1>
+          <h5 style="text-align:right">created date : {{ post.created_at }}</h5>
+          <h5 style="text-align:right">updated date : {{ post.updated_at }}</h5>
+        </div>
+        <div class="panel-body">
+          {% if post.photo %}
+              <img src="{{ post.photo.url }}" class="post_photo" />
+              <hr/>
+        {% endif %}
+          {{ post.content|linebreaks }}
+          <hr/>
+
+          <ul>
+            {% for comment in post.comment_set.all %}
+            <li>
+              {{ comment.message }}
+               | by <span class="text-info">{{ comment.author }}</span>
+              at {{ comment.created_at }}
+              {% if comment.author == request.user %}|
+              <a href="{{ comment.get_edit_url }}"><span class="glyphicon glyphicon-pencil"></span></a>
+              <a href="{{ comment.get_delete_url }}" class="text-danger"><span class="glyphicon glyphicon-trash"></span></a>
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="panel-footer">
+          <a href="{% url "blog:post_list" %}" class="btn btn-default">목록으로</a>
+          <a href="{% url "blog:comment_new" post.pk %}" class="btn btn-primary">댓글쓰기</a>
+          {% if post.author == request.user %}|
+          <a href="{% url "blog:post_edit" pk=post.pk %}" class="btn btn-info">수정하기</a>
+          {% endif %}
+          <hr/>            
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

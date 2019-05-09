@@ -1,0 +1,33 @@
+{% extends 'blog/header.html' %}
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h1>BLOG</h1>
+        </div>
+        <div class="panel-body">
+          <ul style="list-style-type:none">
+            <a href="{% url "blog:post_new" %}" class="btn btn-primary">새글쓰기</a>
+<hr>
+            {% for post in post_list %}
+            <li>
+              <div class="row">
+                <div class="col-sm-8">
+                  <a style="font-size:1.5em" href="{% url "blog:post_detail" post.pk %}">{{ post.title }}</a>
+                </div>
+                <div class="col-sm-4">
+                  at : {{ post.created_at|date:"Y/m/d H:i" }}
+                </div>
+              </div>
+              <hr>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
